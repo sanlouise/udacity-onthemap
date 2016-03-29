@@ -15,14 +15,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginLabel: UILabel!
     @IBOutlet weak var loginButton: UIButton!
-    
-    
-/* In order for users to authenticate, the following steps need to be handled in this exact order.
-(1) Get request token.
-(2) Login with the API.
-(3) Create a Session ID.
-(4) Get the user ID.
-(5) Go the next view. */
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,15 +23,30 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginPressed(sender: AnyObject) {
-            self.view.endEditing(true)
-            UdacityClient.sharedInstance().authenticateLoginWithViewController(self) { (success, errorString) in
+        UdacityClient.sharedInstance().authenticateLoginWithViewController(self) { (success, errorString) in
+            performUIUpdatesOnMain {
                 if success {
                     self.completeLogin()
                 } else {
-                    self.displayMessage(errorString!)
+                    self.displayError(errorString)
                 }
             }
-        
+        }
+    }
+    
+    // MARK: Login
+    
+    private func completeLogin() {
+        let controller = storyboard!.instantiateViewControllerWithIdentifier("WhenLoggedIn") as! UINavigationController
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    private func displayError(errorString: String?) {
+        if let errorString = errorString {
+            loginLabel.text = errorString
+        }
     }
     
 }
+
+
