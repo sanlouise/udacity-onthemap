@@ -31,6 +31,9 @@
                                 <rect key="frame" x="116" y="334" width="89" height="60"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Log In"/>
+                                <connections>
+                                    <action selector="loginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jzo-Lk-JfO"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7S-5c-UpV">
                                 <rect key="frame" x="20" y="305" width="280" height="21"/>
@@ -49,6 +52,10 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="emailTextField" destination="V9n-XO-UFc" id="zGa-wz-JPo"/>
+                        <outlet property="loginButton" destination="DzC-IS-2Xd" id="xEO-sX-0uq"/>
+                        <outlet property="loginLabel" destination="l7S-5c-UpV" id="JS0-rY-5sr"/>
+                        <outlet property="passwordTextField" destination="Ghg-bL-r2a" id="P7s-NS-44s"/>
                         <segue destination="gIx-I9-K2F" kind="show" identifier="whenLoggedIn" id="4aL-44-Gpf"/>
                     </connections>
                 </viewController>
