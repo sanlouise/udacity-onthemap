@@ -15,6 +15,7 @@
 		B68E96D91CAAA16700D3F974 /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96D81CAAA16700D3F974 /* UdacityClient.swift */; };
 		B68E96DB1CAAA17B00D3F974 /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96DA1CAAA17B00D3F974 /* UdacityConstants.swift */; };
 		B68E96DD1CAAA18C00D3F974 /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96DC1CAAA18C00D3F974 /* UdacityConvenience.swift */; };
+		B68E96DF1CAAA22B00D3F974 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96DE1CAAA22B00D3F974 /* GCDBlackBox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		B68E96D81CAAA16700D3F974 /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
 		B68E96DA1CAAA17B00D3F974 /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		B68E96DC1CAAA18C00D3F974 /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
+		B68E96DE1CAAA22B00D3F974 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				B68E96CB1CAA9C3700D3F974 /* Assets.xcassets */,
 				B68E96CD1CAA9C3700D3F974 /* LaunchScreen.storyboard */,
 				B68E96D01CAA9C3700D3F974 /* Info.plist */,
+				B68E96DE1CAAA22B00D3F974 /* GCDBlackBox.swift */,
 			);
 			path = "Udacity On The Map";
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 				B68E96DB1CAAA17B00D3F974 /* UdacityConstants.swift in Sources */,
 				B68E96C51CAA9C3700D3F974 /* AppDelegate.swift in Sources */,
 				B68E96DD1CAAA18C00D3F974 /* UdacityConvenience.swift in Sources */,
+				B68E96DF1CAAA22B00D3F974 /* GCDBlackBox.swift in Sources */,
 				B68E96D91CAAA16700D3F974 /* UdacityClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
