@@ -12,7 +12,7 @@ extension UdacityClient{
     struct Constants {
         // MARK: - Methods
         struct Methods {
-            static let AuthenticationSessionNew = "https://www.udacity.com/api/session"
+            static let AuthenticationNewSession = "https://www.udacity.com/api/session"
             static let UserData = "https://www.udacity.com/api/users/"
         }
         

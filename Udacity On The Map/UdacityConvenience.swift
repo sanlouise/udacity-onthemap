@@ -46,7 +46,7 @@ extension UdacityClient {
         
         // 1. Specify parameters
         let mutableMethod : String = Methods.AuthenticationSessionNew
-        let udacityBody: [String:AnyObject] = [UdacityClient.JSONBody.Username: username, UdacityClient.JSONBody.Password : password ]
+        let udacityBody: [String:AnyObject] = [UdacityClient.JSONBody.Email: email, UdacityClient.JSONBody.Password : password ]
         let jsonBody : [String:AnyObject] = [ UdacityClient.JSONBody.Udacity: udacityBody ]
         
         // 2. Make the request

@@ -15,19 +15,21 @@ class UdacityClient: NSObject {
     
     var sessionID: String?
     var uniqueKey: String?
-    var account: Student?
-    var students: [Student]?
+
     
     override init(){
         session = NSURLSession.sharedSession()
         super.init()
     }
     
-    // MARK: GET
+    // MARK: - GET
     
-    func taskForGETMethod(method: String, var parameters: [String:AnyObject], completionHandlerForGET: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    func taskForGETMethod(method: String, parse: Bool, parameters: [String : AnyObject]?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
         /* 1. Set the parameters */
+        
+        
+        /* 2/3. Build the URL and configure the request */
         var urlString:String
         if let mutableParameters = parameters {
             urlString = method + UdacityClient.escapedParameters(mutableParameters)
@@ -35,38 +37,26 @@ class UdacityClient: NSObject {
             urlString = method
         }
         
-        /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(URL: tmdbURLFromParameters(parameters, withPathExtension: method))
-        
+        let url = NSURL(string: urlString)!
+        let request = NSMutableURLRequest(URL: url)
+        if(parse){// Check it if is for the parse application and apply the keys
+            request.addValue(UdacityClient.Constants.ParseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue(UdacityClient.Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        }
         /* 4. Make the request */
-        let task = session.dataTaskWithRequest(request) { (data, response, error) in
-            
-            func sendError(error: String) {
-                print(error)
-                let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForGET(result: nil, error: NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
-            }
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                sendError("No data was returned by the request!")
-                return
-            }
+        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             
             /* 5/6. Parse the data and use the data (happens in completion handler) */
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+            if let error = downloadError {
+                _ = UdacityClient.errorForData(data, response: response, error: error)
+                completionHandler(result: nil, error: downloadError)
+            } else {
+                var newData = data
+                if(!parse){// If it isn't for parse, it is for the Udacity API which it requires to ommit the first 5 characters for security reasons
+                    newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
+                }
+                UdacityClient.parseJSONWithCompletionHandler(newData!, completionHandler: completionHandler)
+            }
         }
         
         /* 7. Start the request */
@@ -74,7 +64,6 @@ class UdacityClient: NSObject {
         
         return task
     }
-    
     // MARK: Helpers
     
     // substitute the key for the value that is contained within the method name
@@ -109,27 +98,22 @@ class UdacityClient: NSObject {
         return Singleton.sharedInstance
     }
     
-//    // create a URL from parameters
-//    private func tmdbURLFromParameters(parameters: [String:AnyObject], withPathExtension: String? = nil) -> NSURL {
-//        
-//        let components = NSURLComponents()
-//        components.scheme = UdacityClient.Constants.ApiScheme
-//        components.host = UdacityClient.Constants.ApiHost
-//        components.path = UdacityClient.Constants.ApiPath + (withPathExtension ?? "")
-//        components.queryItems = [NSURLQueryItem]()
-//        
-//        for (key, value) in parameters {
-//            let queryItem = NSURLQueryItem(name: key, value: "\(value)")
-//            components.queryItems!.append(queryItem)
-//        }
-//        
-//        return components.URL!
-//    }
-
-
+    // Helper method from github.com/spirosrap/On-The-Map/
     
-    
-    
+    class func escapedParameters(parameters: [String : AnyObject]) -> String {
+        var urlVars = [String]()
+        for (key, value) in parameters {
+            /* Make sure that it is a string value */
+            let stringValue = "\(value)"
+            /* Escape it */
+            _ = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            /* FIX: Replace spaces with '+' */
+            let replaceSpaceValue = stringValue.stringByReplacingOccurrencesOfString(" ", withString: "+", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            /* Append it */
+            urlVars += [key + "=" + "\(replaceSpaceValue)"]
+        }
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
+    }
     
 }
 
