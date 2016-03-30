@@ -8,8 +8,9 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -19,11 +20,21 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        passwordTextField.delegate = self
+        emailTextField.delegate = self
 
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 
     @IBAction func loginPressed(sender: AnyObject) {
-        UdacityClient.sharedInstance().authenticateLoginWithViewController(self) { (success, errorString) in
+        UdacityClient.sharedInstance().authenticateLoginWithViewController() { (success, errorString) in
             performUIUpdatesOnMain {
                 if success {
                     self.completeLogin()
@@ -46,6 +57,27 @@ class LoginViewController: UIViewController {
             loginLabel.text = errorString
         }
     }
+    
+   
+    // MARK: UITextFieldDelegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    private func keyboardHeight(notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.CGRectValue().height
+    }
+    
+    private func resignIfFirstResponder(textField: UITextField) {
+        if textField.isFirstResponder() {
+            textField.resignFirstResponder()
+        }
+    }
+    
     
 }
 
