@@ -45,9 +45,6 @@ extension UdacityClient{
         static let Udacity = "udacity"
         static let Username = "username"
         static let Password = "password"
-        static let objectId = "objectId"
-        static let uniqueKey = "uniqueKey"
-        static let firstName = "firstName"
-        static let lastName = "lastName"
+
     }
 }

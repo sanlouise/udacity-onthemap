@@ -41,6 +41,64 @@ extension UdacityClient {
     func getSessionID(parameters: [String : AnyObject]?, completionHandler: (success: Bool, sessionID: String?, userKey: String?, error: NSError?) -> Void) {
         /* Check for success */
         
+        
+        taskForPOSTMethod(UdacityClient.Methods.Session, parameters: parameters!) { JSONResult, error in
+            if let error = error {
+                
+                completionHandler(success: false, sessionID: nil, userKey: nil, error: error)
+                
+            } else {
+
+                if let session = JSONResult.valueForKey(UdacityCLient.JSONResponseKeys.Session) {
+                    
+                    if let sessionID = session.valueForKey(UdacityClient.JSONResponseKeys.SessionID) as? String {
+                        
+                        if let account = JSONResult[UdacityClient.JSONResponseKeys.Account]  {
+                            
+                            if let IDKey = account![UdacityClient.JSONResponseKeys.IDKey] as? String {
+                                
+                                completionHandler(success: true, sessionID: sessionID, userKey: IDKey, error: nil)
+                                
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    
+    func getUserID(jsonBody: [String : AnyObject], completionHandler: (userID: String?, error: NSError?) -> Void) {
+        let task = self.taskForPOSTMethod(UdacityClient.Methods.Session, jsonBody: jsonBody) { JSONResult, error in
+
+            if let error = error {
+                completionHandler(userID: nil, error: NSError(domain: "getUserID", code: 0, userInfo: [NSLocalizedDescriptionKey: "Network Error"]))
+                
+            } else {
+                
+                if let statusCode = JSONResult.valueForKey(JSONResponseKeys.StatusCode) as? Int {
+                    if statusCode == 403 {
+                        let udacityError = JSONResult.valueForKey(JSONResponseKeys.Error) as! String
+                        completionHandler(userID: nil, error: NSError(domain: "getUserID", code: 1, userInfo: [NSLocalizedDescriptionKey: udacityError]))
+                    }
+                    
+                } else {
+                    
+                    if let account = JSONResult.valueForKey(JSONResponseKeys.Account) as? NSDictionary {
+                        if let userID = account.valueForKey(JSONResponseKeys.Key) as? String {
+                            completionHandler(userID: userID, error: nil)
+                            
+                        } else {
+                            completionHandler(userID: nil, error: NSError(domain: "getUserID", code: 3, userInfo: [NSLocalizedDescriptionKey: "Could not parse userID as String"]))
+                        }
+                        
+                    } else {
+                        completionHandler(userID: nil, error: NSError(domain: "getUserID", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not parse account dictionary"]))
+                    }
+                }
+            }
+        }
+    }
+    
 }
     
