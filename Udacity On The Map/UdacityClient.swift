@@ -12,59 +12,73 @@ import UIKit
 class UdacityClient: NSObject {
     
     var session: NSURLSession
-    
     var sessionID: String?
     var uniqueKey: String?
 
-    
     override init(){
         session = NSURLSession.sharedSession()
         super.init()
     }
     
-    // MARK: - GET
     
-    func taskForGETMethod(method: String, parse: Bool, parameters: [String : AnyObject]?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    // MARK POST
+    
+    func taskForPOSTMethod(method: String, var parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
-        /* 1. Set the parameters */
+        /* Build the URL */
+        let urlString = Constants.BaseURLSecure + method
+        let url = NSURL(string: urlString)
         
+        /* Construct the request */
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        /* 2/3. Build the URL and configure the request */
-        var urlString:String
-        if let mutableParameters = parameters {
-            urlString = method + UdacityClient.escapedParameters(mutableParameters)
-        }else{
-            urlString = method
-        }
-        
-        let url = NSURL(string: urlString)!
-        let request = NSMutableURLRequest(URL: url)
-        if(parse){// Check it if is for the parse application and apply the keys
-            request.addValue(UdacityClient.Constants.ParseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
-            request.addValue(UdacityClient.Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        }
-        /* 4. Make the request */
-        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
+        /* Try to run the request with error catching */
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(parameters!, options: .PrettyPrinted)
+        } catch {
+            request.HTTPBody = nil
             
-            /* 5/6. Parse the data and use the data (happens in completion handler) */
-            if let error = downloadError {
-                _ = UdacityClient.errorForData(data, response: response, error: error)
-                completionHandler(result: nil, error: downloadError)
-            } else {
-                var newData = data
-                if(!parse){// If it isn't for parse, it is for the Udacity API which it requires to ommit the first 5 characters for security reasons
-                    newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
-                }
-                UdacityClient.parseJSONWithCompletionHandler(newData!, completionHandler: completionHandler)
-            }
+            completionHandler(result: nil, error: Errors.constructError(domain: "UdaciousClient", userMessage: "An error occured while getting data from the network."))
         }
         
-        /* 7. Start the request */
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            
+            func sendError(error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandlerForPOST(result: nil, error: NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(error)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            
+            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
+        }
+        
         task.resume()
         
         return task
-    }
-    // MARK: Helpers
+    }    // MARK: Helpers
     
     // substitute the key for the value that is contained within the method name
     func subtituteKeyInMethod(method: String, key: String, value: String) -> String? {
@@ -101,7 +115,6 @@ class UdacityClient: NSObject {
     
     
     // Helper method from github.com/spirosrap/On-The-Map/
-    
     class func escapedParameters(parameters: [String : AnyObject]) -> String {
         var urlVars = [String]()
         for (key, value) in parameters {
@@ -116,6 +129,19 @@ class UdacityClient: NSObject {
         }
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
+    
+    // Helper Function
+//    class func parseJSONDataWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
+//        
+//        var parsedResult: AnyObject!
+//        do {
+//            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+//        } catch {
+//            completionHandler(result: nil, error: Errors.constructError(domain: "UdacityClient", userMessage: ErrorMessages.Parse))
+//        }
+//        
+//        completionHandler(result: parsedResult, error: nil)
+//    }
     
 }
 

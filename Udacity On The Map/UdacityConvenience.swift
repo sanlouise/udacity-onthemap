@@ -40,8 +40,6 @@ extension UdacityClient {
     }
 
 
-
-
     /* Get the Session ID for the user */
     func getSessionID(parameters: [String : AnyObject]?, completionHandler: (success: Bool, sessionID: String?, userKey: String?, error: NSError?) -> Void) {
         /* Check for success */
