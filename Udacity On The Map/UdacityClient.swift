@@ -35,14 +35,7 @@ class UdacityClient: NSObject {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        /* Try to run the request with error catching */
-        do {
-            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(parameters!, options: .PrettyPrinted)
-        } catch {
-            request.HTTPBody = nil
-            
-            completionHandler(result: nil, error: Errors.constructError(domain: "UdaciousClient", userMessage: "An error occured while getting data from the network."))
-        }
+        request.HTTPBody = "{\"udacity\": {\"username\": \"account@domain.com\", \"password\": \"********\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
