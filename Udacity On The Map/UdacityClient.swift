@@ -98,6 +98,8 @@ class UdacityClient: NSObject {
         return Singleton.sharedInstance
     }
     
+    
+    
     // Helper method from github.com/spirosrap/On-The-Map/
     
     class func escapedParameters(parameters: [String : AnyObject]) -> String {

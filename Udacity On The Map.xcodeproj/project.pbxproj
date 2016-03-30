@@ -17,7 +17,9 @@
 		B68E96DD1CAAA18C00D3F974 /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96DC1CAAA18C00D3F974 /* UdacityConvenience.swift */; };
 		B68E96DF1CAAA22B00D3F974 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96DE1CAAA22B00D3F974 /* GCDBlackBox.swift */; };
 		B68E96E11CAAA47F00D3F974 /* Students.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96E01CAAA47F00D3F974 /* Students.swift */; };
-		B68E96E31CAAEAA600D3F974 /* Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96E21CAAEAA600D3F974 /* Styling.swift */; };
+		B68E96E31CAAEAA600D3F974 /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96E21CAAEAA600D3F974 /* BorderedButton.swift */; };
+		B68E96E51CAAFC8200D3F974 /* IJReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96E41CAAFC8200D3F974 /* IJReachability.swift */; };
+		B68E96E71CAAFCE500D3F974 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68E96E61CAAFCE500D3F974 /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +35,9 @@
 		B68E96DC1CAAA18C00D3F974 /* UdacityConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
 		B68E96DE1CAAA22B00D3F974 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		B68E96E01CAAA47F00D3F974 /* Students.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Students.swift; sourceTree = "<group>"; };
-		B68E96E21CAAEAA600D3F974 /* Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styling.swift; sourceTree = "<group>"; };
+		B68E96E21CAAEAA600D3F974 /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
+		B68E96E41CAAFC8200D3F974 /* IJReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IJReachability.swift; sourceTree = "<group>"; };
+		B68E96E61CAAFCE500D3F974 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +79,8 @@
 				B68E96D01CAA9C3700D3F974 /* Info.plist */,
 				B68E96DE1CAAA22B00D3F974 /* GCDBlackBox.swift */,
 				B68E96E01CAAA47F00D3F974 /* Students.swift */,
-				B68E96E21CAAEAA600D3F974 /* Styling.swift */,
+				B68E96E21CAAEAA600D3F974 /* BorderedButton.swift */,
+				B68E96E81CAAFD1000D3F974 /* Reachability */,
 			);
 			path = "Udacity On The Map";
 			sourceTree = "<group>";
@@ -96,6 +101,15 @@
 				B68E96DC1CAAA18C00D3F974 /* UdacityConvenience.swift */,
 			);
 			name = Udacity;
+			sourceTree = "<group>";
+		};
+		B68E96E81CAAFD1000D3F974 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				B68E96E41CAAFC8200D3F974 /* IJReachability.swift */,
+				B68E96E61CAAFCE500D3F974 /* Reachability.swift */,
+			);
+			name = Reachability;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,13 +184,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B68E96E51CAAFC8200D3F974 /* IJReachability.swift in Sources */,
 				B68E96C71CAA9C3700D3F974 /* LoginViewController.swift in Sources */,
 				B68E96DB1CAAA17B00D3F974 /* UdacityConstants.swift in Sources */,
-				B68E96E31CAAEAA600D3F974 /* Styling.swift in Sources */,
+				B68E96E31CAAEAA600D3F974 /* BorderedButton.swift in Sources */,
 				B68E96C51CAA9C3700D3F974 /* AppDelegate.swift in Sources */,
 				B68E96E11CAAA47F00D3F974 /* Students.swift in Sources */,
 				B68E96DD1CAAA18C00D3F974 /* UdacityConvenience.swift in Sources */,
 				B68E96DF1CAAA22B00D3F974 /* GCDBlackBox.swift in Sources */,
+				B68E96E71CAAFCE500D3F974 /* Reachability.swift in Sources */,
 				B68E96D91CAAA16700D3F974 /* UdacityClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
