@@ -45,35 +45,31 @@ class UdacityClient: NSObject {
                 let userInfo = [NSLocalizedDescriptionKey : error]
                 completionHandlerForPOST(result: nil, error: NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
             }
-            
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 sendError("There was an error with your request: \(error)")
                 return
             }
-            
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 sendError("Your request returned a status code other than 2xx!")
                 return
             }
-            
             /* GUARD: Was there any data returned? */
             guard let data = data else {
                 sendError("No data was returned by the request!")
                 return
             }
-            
-            
             self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForPOST)
         }
-        
         task.resume()
-        
         return task
-    }    // MARK: Helpers
+        
+    }
     
-    // substitute the key for the value that is contained within the method name
+    // MARK: Helpers
+    
+    // Substitute the key for the value that is contained within the method name
     func subtituteKeyInMethod(method: String, key: String, value: String) -> String? {
         if method.rangeOfString("{\(key)}") != nil {
             return method.stringByReplacingOccurrencesOfString("{\(key)}", withString: value)
@@ -104,9 +100,7 @@ class UdacityClient: NSObject {
         }
         return Singleton.sharedInstance
     }
-    
-    
-    
+
     // Helper method from github.com/spirosrap/On-The-Map/
     class func escapedParameters(parameters: [String : AnyObject]) -> String {
         var urlVars = [String]()

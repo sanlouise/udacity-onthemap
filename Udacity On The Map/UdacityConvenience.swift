@@ -24,12 +24,10 @@ extension UdacityClient {
     //Login authentication with via Udacity
     
     func authenticateLoginWithViewController(parameters: [String : AnyObject], completionHandler: (success: Bool, error: NSError?) -> Void){
-        getSessionID(parameters) { success, sessionID, IDKey, error in
+        getSessionID(parameters) { success, sessionID, UserID, error in
             if success {
-                
                 self.sessionID = sessionID
-                self.UserID = UserID
-                print(IDKey)
+                print(UserID)
                 completionHandler(success: true, error: nil)
             } else {
                 
@@ -39,39 +37,10 @@ extension UdacityClient {
         
     }
 
-
     /* Get the Session ID for the user */
     func getSessionID(parameters: [String : AnyObject]?, completionHandler: (success: Bool, sessionID: String?, userKey: String?, error: NSError?) -> Void) {
         /* Check for success */
         
-        
-        taskForPOSTMethod(UdaciousClient.Methods.Session, parameters: parameters!) { JSONResult, error in
-            if let error = error {
-                
-                completionHandler(success: false, sessionID: nil, userKey: nil, error: error)
-                
-            } else {
-                /* Attempt to get the session ID */
-                if let session = JSONResult.valueForKey(UdaciousClient.JSONResponseKeys.Session) {
-                    
-                    if let sessionID = session.valueForKey(UdaciousClient.JSONResponseKeys.SessionID) as? String {
-                        
-                        /* get the account and user from JSONResult */
-                        if let account = JSONResult[UdaciousClient.JSONResponseKeys.Account]  {
-                            
-                            if let IDKey = account![UdaciousClient.JSONResponseKeys.IDKey] as? String {
-                                
-                                completionHandler(success: true, sessionID: sessionID, userKey: IDKey, error: nil)
-                                
-                            }
-                        }
-                    }
-                }
-            }
         }
-    }
-
-
-
 }
     
