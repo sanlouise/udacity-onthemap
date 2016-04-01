@@ -117,18 +117,5 @@ class UdacityClient: NSObject {
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
     
-    // Helper Function
-//    class func parseJSONDataWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
-//        
-//        var parsedResult: AnyObject!
-//        do {
-//            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-//        } catch {
-//            completionHandler(result: nil, error: Errors.constructError(domain: "UdacityClient", userMessage: ErrorMessages.Parse))
-//        }
-//        
-//        completionHandler(result: parsedResult, error: nil)
-//    }
-    
 }
 
